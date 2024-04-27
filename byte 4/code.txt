@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        #weather-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        .weather-info {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #location {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <input type="text" id="cityInput" placeholder="Enter city name">
+        <button onclick="getWeather()">Get Weather</button>
+        <div id="weatherData" style="display: none;">
+            <img id="weather-icon" src="" alt="Weather Icon">
+            <div class="weather-info" id="weather"></div>
+            <div class="weather-info" id="temperature"></div>
+            <div class="weather-info" id="humidity"></div>
+            <div id="location"></div>
+        </div>
+    </div>
+
+    <script>
+        function getWeather() {
+            const apiKey =  = 'https://open-weather13.p.rapidapi.com/city/landon/EN';
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '0ab455c428mshb4ef06d0388e233p17985bjsn7c5dac34aaa0',
+		'X-RapidAPI-Host': 'open-weather13.p.rapidapi.com'
+	}
+};
+
+try {
+	const response = await fetch(url, options);
+	const result = await response.text();
+	console.log(result);
+} catch (error) {
+	console.error(error);
+}; // Replace with your API key
+            const city = document.getElementById('cityInput').value;
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('weather-icon').src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+                    document.getElementById('weather').textContent = data.weather[0].description;
+                    document.getElementById('temperature').textContent = `Temperature: ${data.main.temp} °C`;
+                    document.getElementById('humidity').textContent = `Humidity: ${data.main.humidity}%`;
+                    document.getElementById('location').textContent = `Location: ${data.name}, ${data.sys.country}`;
+                    document.getElementById('weatherData').style.display = 'block';
+                })
+                .catch(error => {
+                    console.log('Error fetching weather data:', error);
+                    alert('Failed to fetch weather data. Please try again.');
+                });
+        }
+    </script>
+</body>
+</html>
